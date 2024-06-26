@@ -50,7 +50,7 @@ func (a *JwtRoleAuth) GetRole(r *http.Request) (string, error) {
 	)
 
 	jwtToken := r.Header.Get("Authourization")
-	
+
 	if jwtToken == "" {
 		return "unauthorized", nil
 	} else if strings.Contains(jwtToken, "Basic") {
@@ -64,7 +64,7 @@ func (a *JwtRoleAuth) GetRole(r *http.Request) (string, error) {
 		log.Println("Error while extracting claims: ", err)
 		return "unauthorized", err
 	}
-	
+
 	return claims["role"].(string), nil
 }
 

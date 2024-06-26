@@ -28,9 +28,7 @@ type Tokens struct {
 	RefreshToken string
 }
 
-
 var tokenKey = config.Load().TokenKey
-
 
 // CreateToken creates a new token
 func GenereteJWTToken(user *pb.User) *Tokens {
@@ -40,7 +38,7 @@ func GenereteJWTToken(user *pb.User) *Tokens {
 	claims := accessToken.Claims.(jwt.MapClaims)
 	claims["user_id"] = user.Id
 	claims["username"] = user.UserName
-	claims["role"]=user.Role
+	claims["role"] = user.Role
 	claims["email"] = user.Email
 	claims["iat"] = time.Now().Unix()
 	claims["exp"] = time.Now().Add(60 * time.Minute).Unix()
@@ -51,8 +49,8 @@ func GenereteJWTToken(user *pb.User) *Tokens {
 	rftclaims := refreshToken.Claims.(jwt.MapClaims)
 	rftclaims["user_id"] = user.Id
 	rftclaims["username"] = user.UserName
+	claims["role"] = user.Role
 	rftclaims["email"] = user.Email
-	claims["role"]=user.Role
 	rftclaims["iat"] = time.Now().Unix()
 	rftclaims["exp"] = time.Now().Add(24 * time.Hour).Unix()
 	refresh, err := refreshToken.SignedString([]byte(tokenKey))
@@ -65,7 +63,6 @@ func GenereteJWTToken(user *pb.User) *Tokens {
 		RefreshToken: refresh,
 	}
 }
-
 
 func ExtractClaim(cfg *config.Config, tokenStr string) (jwt.MapClaims, error) {
 	var (

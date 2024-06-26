@@ -331,13 +331,16 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string"
-                },
                 "password": {
                     "type": "string"
                 },
+                "phoneNumber": {
+                    "type": "string"
+                },
                 "role": {
+                    "type": "string"
+                },
+                "userName": {
                     "type": "string"
                 }
             }
