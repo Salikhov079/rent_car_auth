@@ -16,10 +16,10 @@ func TestCreateUser(t *testing.T) {
 	}
 
 	user := &pb.User{
-		Id:       "b409ff53-ff2b-4033-84b4-4ce555081647",
-		UserName: "Your_Name",
-		Email:    "e@example.com",
-		Password: "helloworld",
+		Id:          "b409ff53-ff2b-4033-84b4-4ce555081647",
+		UserName:    "Your_Name",
+		Email:       "e@example.com",
+		Password:    "helloworld",
 		PhoneNumber: "+998901234567",
 	}
 	result, err := stg.User().Create(user)
@@ -41,7 +41,7 @@ func TestGetByIdUser(t *testing.T) {
 	user, err := stg.User().GetById(&Id)
 
 	assert.NoError(t, err)
- 	assert.NotNil(t, user)
+	assert.NotNil(t, user)
 }
 
 func TestGetAllUser(t *testing.T) {
@@ -98,4 +98,3 @@ func TestDeleteUser(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Nil(t, result)
 }
-

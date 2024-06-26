@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"log"
+
 	pb "github.com/Salikhov079/rent_car/genprotos"
 	s "github.com/Salikhov079/rent_car/storage"
-
 )
 
 type UserService struct {
@@ -17,7 +17,7 @@ func NewUserService(stg s.InitRoot) *UserService {
 	return &UserService{stg: stg}
 }
 
-func (c *UserService) CreateUser(ctx context.Context, User *pb.User) (*pb.Void, error) {
+func (c *UserService) Create(ctx context.Context, User *pb.User) (*pb.Void, error) {
 	pb, err := c.stg.User().Create(User)
 	if err != nil {
 		log.Print(err)
@@ -25,7 +25,7 @@ func (c *UserService) CreateUser(ctx context.Context, User *pb.User) (*pb.Void, 
 	return pb, err
 }
 
-func (c *UserService) GetAllUser(ctx context.Context, pb *pb.User) (*pb.GetAllUsers, error) {
+func (c *UserService) GetAll(ctx context.Context, pb *pb.User) (*pb.GetAllUsers, error) {
 	Users, err := c.stg.User().GetAll(pb)
 	if err != nil {
 		log.Print(err)
@@ -34,7 +34,7 @@ func (c *UserService) GetAllUser(ctx context.Context, pb *pb.User) (*pb.GetAllUs
 	return Users, err
 }
 
-func (c *UserService) GetByIdUser(ctx context.Context, id *pb.ById) (*pb.User, error) {
+func (c *UserService) GetById(ctx context.Context, id *pb.ById) (*pb.User, error) {
 	prod, err := c.stg.User().GetById(id)
 	if err != nil {
 		log.Print(err)
@@ -43,7 +43,7 @@ func (c *UserService) GetByIdUser(ctx context.Context, id *pb.ById) (*pb.User, e
 	return prod, err
 }
 
-func (c *UserService) UpdateUser(ctx context.Context, User *pb.User) (*pb.Void, error) {
+func (c *UserService) Update(ctx context.Context, User *pb.User) (*pb.Void, error) {
 	pb, err := c.stg.User().Update(User)
 	if err != nil {
 		log.Print(err)
@@ -52,7 +52,7 @@ func (c *UserService) UpdateUser(ctx context.Context, User *pb.User) (*pb.Void, 
 	return pb, err
 }
 
-func (c *UserService) DeleteUser(ctx context.Context, id *pb.ById) (*pb.Void, error) {
+func (c *UserService) Delete(ctx context.Context, id *pb.ById) (*pb.Void, error) {
 	pb, err := c.stg.User().Delete(id)
 	if err != nil {
 		log.Print(err)
@@ -61,7 +61,7 @@ func (c *UserService) DeleteUser(ctx context.Context, id *pb.ById) (*pb.Void, er
 	return pb, err
 }
 
-func (c *UserService) LoginUser(ctx context.Context, username *pb.User) (*pb.User, error) {
+func (c *UserService) Login(ctx context.Context, username *pb.User) (*pb.User, error) {
 	prod, err := c.stg.User().Login(username)
 	if err != nil {
 		log.Print(err)

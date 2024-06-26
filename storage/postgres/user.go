@@ -51,9 +51,9 @@ func (p *UserStorage) GetById(id *pb.ById) (*pb.User, error) {
 func (p *UserStorage) GetAll(us *pb.User) (*pb.GetAllUsers, error) {
 	users := &pb.GetAllUsers{}
 	var arr []interface{}
-	count:=1
-	
-	query:=` SELECT user_name, email, phone_number FROM users 
+	count := 1
+
+	query := ` SELECT user_name, email, phone_number FROM users 
 	WHERE deleted_at = 0 `
 
 	if len(us.Email) > 0 {
@@ -116,8 +116,8 @@ func (p *UserStorage) Login(userName *pb.User) (*pb.User, error) {
 	var user pb.User
 
 	err := row.Scan(&user.UserName,
-					&user.Email,
-					&user.PhoneNumber)
+		&user.Email,
+		&user.PhoneNumber)
 	if err != nil {
 		return nil, err
 	}

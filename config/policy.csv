@@ -1,0 +1,23 @@
+p, admin, users,manage
+p, admin, roles,manage
+p, admin, permissions,manage
+
+p, student, classes, attend
+p, student, face_id, use
+p, student, schedule, access
+
+p, teacher, classes, attend
+p, teacher, schedule, access
+p, teacher, exams, grade
+p, user, /user/getall, GET
+p, guest, schedule, view
+p, unauthorized, /swagger/index.html, GET
+p, unauthorized, /swagger/swagger-ui.css, GET
+p, unauthorized, /swagger/swagger-ui-bundle.js, GET
+p, unauthorized, /swagger/favicon-32x32.png, GET
+p, unauthorized, /swagger/favicon-16x16.png, GET
+p, unauthorized, /swagger/swagger-ui-standalone-preset.js, GET
+p, unauthorized, /swagger/swagger/doc.json, GET
+p, unauthorized, /user/login, POST
+p, unauthorized, /user/registr, POST
+ 
