@@ -1,7 +1,7 @@
 package api
 
 import (
-	"log/slog"
+	"log"
 
 	"github.com/Salikhov079/rent_car/api/handler"
 	"github.com/Salikhov079/rent_car/api/middleware"
@@ -32,7 +32,7 @@ func NewGin(h *handler.Handler) *gin.Engine {
 
 	err = e.LoadPolicy()
 	if err != nil {
-		slog.Error("casbin error load policy", err)
+		log.Fatal("casbin error load policy: ", err)
 		panic(err)
 	}
 

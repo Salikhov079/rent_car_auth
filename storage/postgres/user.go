@@ -108,8 +108,8 @@ func (p *UserStorage) Delete(id *pb.ById) (*pb.Void, error) {
 
 func (p *UserStorage) Login(userName *pb.User) (*pb.User, error) {
 	query := `
-			SELECT user_name, email, phone_number FROM users 
-			WHERE user_name =$1 and deleted_at=0
+			SELECT user_name, email, phone_number, role FROM users 
+			WHERE user_name = $1 and deleted_at = 0
 		`
 	row := p.db.QueryRow(query, userName.UserName)
 
@@ -117,7 +117,8 @@ func (p *UserStorage) Login(userName *pb.User) (*pb.User, error) {
 
 	err := row.Scan(&user.UserName,
 		&user.Email,
-		&user.PhoneNumber)
+		&user.PhoneNumber, 
+		&user.Role)
 	if err != nil {
 		return nil, err
 	}

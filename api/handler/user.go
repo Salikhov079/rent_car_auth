@@ -4,6 +4,7 @@ import (
 	"github.com/Salikhov079/rent_car/api/token"
 
 	pb "github.com/Salikhov079/rent_car/genprotos"
+	"github.com/Salikhov079/rent_car/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,16 +21,18 @@ import (
 // @Failure 		401   {string}   string    "Error while Created"
 // @Router 			/user/registr [post]
 func (h *Handler) RegisterUser(ctx *gin.Context) {
-	arr := pb.User{}
-	err := ctx.BindJSON(&arr)
+	arr := &models.Users{}
+	err := ctx.BindJSON(arr)
 	if err != nil {
 		panic(err)
 	}
-	_, err = h.User.Create(ctx, &arr)
+	user := &pb.User{UserName: arr.UserName, PhoneNumber: arr.PhoneNumber, Password: arr.Password, Email: arr.Email, Role: arr.Role}
+
+	_, err = h.User.Create(ctx, user)
 	if err != nil {
 		panic(err)
 	}
-	t := token.GenereteJWTToken(&arr)
+	t := token.GenereteJWTToken(user)
 	ctx.JSON(200, t)
 }
 
@@ -134,15 +137,17 @@ func (h *Handler) GetbyIdUser(ctx *gin.Context) {
 // @Failure 		401 {string}  string   "Error while LoginUserd"
 // @Router 			/user/login [post]
 func (h *Handler) LoginUser(ctx *gin.Context) {
-	user := &pb.User{}
-	err := ctx.ShouldBindJSON(user)
+	arr := &models.Users{}
+	err := ctx.ShouldBindJSON(arr)
 	if err != nil {
 		panic(err)
 	}
-	_, err = h.User.Login(ctx, user)
+	user := &pb.User{UserName: arr.UserName, PhoneNumber: arr.PhoneNumber, Password: arr.Password, Email: arr.Email, Role: arr.Role}
+
+	res, err := h.User.Login(ctx, user)
 	if err != nil {
 		panic(err)
 	}
-	t := token.GenereteJWTToken(user)
+	t := token.GenereteJWTToken(res)
 	ctx.JSON(200, t)
 }
