@@ -17,9 +17,10 @@ func TestCreateUser(t *testing.T) {
 
 	user := &pb.User{
 		Id:       "b409ff53-ff2b-4033-84b4-4ce555081647",
-		UserName: "Mukhammed_777",
-		Password: "password123",
-		Email:    "unique_test_user@example.com",
+		UserName: "Your_Name",
+		Email:    "e@example.com",
+		Password: "helloworld",
+		PhoneNumber: "+998901234567",
 	}
 	result, err := stg.User().Create(user)
 
@@ -35,7 +36,7 @@ func TestGetByIdUser(t *testing.T) {
 
 	var Id pb.ById
 
-	Id.Id = "b409ff53-ff2b-4033-84b4-4ce555081647"
+	Id.Id = "80e07ab6-708c-4534-a3b5-9d3e643e78cd"
 
 	user, err := stg.User().GetById(&Id)
 
@@ -60,14 +61,26 @@ func TestUpdateUser(t *testing.T) {
 	}
 
 	user := &pb.User{
-		Id:       "user_id_here",
-		UserName: "updated_user",
-		Email:    "updated_user@example.com",
+		Id:       "80e07ab6-708c-4534-a3b5-9d3e643e78cd",
+		UserName: "New_User_Name",
+		Email:    "new.e@example.com",
 	}
 	result, err := stg.User().Update(user)
 
 	assert.NoError(t, err)
-	assert.NotNil(t, result)
+	assert.Nil(t, result)
+}
+
+func TestLoginUser(t *testing.T) {
+	stg, err := NewPostgresStorage()
+	if err != nil {
+		log.Fatal("Error while connection on db: ", err.Error())
+	}
+
+	user, err := stg.User().Login(&pb.User{UserName: "New_User_Name"})
+
+	assert.NoError(t, err)
+	assert.NotNil(t, user)
 }
 
 func TestDeleteUser(t *testing.T) {
@@ -78,22 +91,11 @@ func TestDeleteUser(t *testing.T) {
 
 	var Id pb.ById
 
-	Id.Id = "b409ff53-ff2b-4033-84b4-4ce555081647"
+	Id.Id = "80e07ab6-708c-4534-a3b5-9d3e643e78cd"
 
 	result, err := stg.User().Delete(&Id)
 
 	assert.NoError(t, err)
-	assert.NotNil(t, result)
+	assert.Nil(t, result)
 }
 
-func TestLoginUser(t *testing.T) {
-	stg, err := NewPostgresStorage()
-	if err != nil {
-		log.Fatal("Error while connection on db: ", err.Error())
-	}
-
-	user, err := stg.User().Login(&pb.User{})
-
-	assert.NoError(t, err)
-	assert.NotNil(t, user)
-}

@@ -99,7 +99,7 @@ func (p *UserStorage) Update(user *pb.User) (*pb.Void, error) {
 
 func (p *UserStorage) Delete(id *pb.ById) (*pb.Void, error) {
 	query := `
-		UPDATE FROM users SET deleted_at = $2
+		UPDATE users SET deleted_at = $2
 		WHERE id = $1 AND deleted_at = 0
 	`
 	_, err := p.db.Exec(query, id.Id, time.Now().Unix())

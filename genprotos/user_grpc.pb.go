@@ -24,6 +24,7 @@ const (
 	UserService_Update_FullMethodName  = "/protos.UserService/Update"
 	UserService_GetById_FullMethodName = "/protos.UserService/GetById"
 	UserService_GetAll_FullMethodName  = "/protos.UserService/GetAll"
+	UserService_Login_FullMethodName   = "/protos.UserService/Login"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -35,6 +36,7 @@ type UserServiceClient interface {
 	Update(ctx context.Context, in *User, opts ...grpc.CallOption) (*Void, error)
 	GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*User, error)
 	GetAll(ctx context.Context, in *User, opts ...grpc.CallOption) (*GetAllUsers, error)
+	Login(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error)
 }
 
 type userServiceClient struct {
@@ -90,6 +92,15 @@ func (c *userServiceClient) GetAll(ctx context.Context, in *User, opts ...grpc.C
 	return out, nil
 }
 
+func (c *userServiceClient) Login(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error) {
+	out := new(User)
+	err := c.cc.Invoke(ctx, UserService_Login_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -99,6 +110,7 @@ type UserServiceServer interface {
 	Update(context.Context, *User) (*Void, error)
 	GetById(context.Context, *ById) (*User, error)
 	GetAll(context.Context, *User) (*GetAllUsers, error)
+	Login(context.Context, *User) (*User, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -120,6 +132,9 @@ func (UnimplementedUserServiceServer) GetById(context.Context, *ById) (*User, er
 }
 func (UnimplementedUserServiceServer) GetAll(context.Context, *User) (*GetAllUsers, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
+}
+func (UnimplementedUserServiceServer) Login(context.Context, *User) (*User, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -224,6 +239,24 @@ func _UserService_GetAll_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(User)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).Login(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_Login_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).Login(ctx, req.(*User))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -250,6 +283,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAll",
 			Handler:    _UserService_GetAll_Handler,
+		},
+		{
+			MethodName: "Login",
+			Handler:    _UserService_Login_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
