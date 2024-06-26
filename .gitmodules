@@ -1,0 +1,3 @@
+[submodule "rent_car_submodule"]
+	path = rent_car_submodule
+	url = git@github.com:Salikhov079/rent_car_submodule.git
