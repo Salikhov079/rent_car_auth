@@ -24,13 +24,15 @@ func (h *Handler) RegisterUser(ctx *gin.Context) {
 	arr := &models.Users{}
 	err := ctx.BindJSON(arr)
 	if err != nil {
-		panic(err)
+		ctx.JSON(400, err.Error())
+		return
 	}
 	user := &pb.User{UserName: arr.UserName, PhoneNumber: arr.PhoneNumber, Password: arr.Password, Email: arr.Email, Role: arr.Role}
 
 	_, err = h.User.Create(ctx, user)
 	if err != nil {
-		panic(err)
+		ctx.JSON(400, err.Error())
+		return
 	}
 	t := token.GenereteJWTToken(user)
 	ctx.JSON(200, t)
@@ -49,15 +51,18 @@ func (h *Handler) RegisterUser(ctx *gin.Context) {
 // @Failure 		401   {string} string    "Error while created"
 // @Router 			/user/update/{id} [put]
 func (h *Handler) UpdateUser(ctx *gin.Context) {
-	arr := pb.User{}
-	arr.Id = ctx.Param("id")
+	arr := models.Users{}
 	err := ctx.BindJSON(&arr)
 	if err != nil {
-		panic(err)
+		ctx.JSON(400, err.Error())
+		return
 	}
-	_, err = h.User.Update(ctx, &arr)
+	user := &pb.User{Id: ctx.Param("id"), UserName: arr.UserName, PhoneNumber: arr.PhoneNumber, Password: arr.Password, Email: arr.Email, Role: arr.Role}
+	
+	_, err = h.User.Update(ctx, user)
 	if err != nil {
-		panic(err)
+		ctx.JSON(400, err.Error())
+		return
 	}
 	ctx.JSON(200, "Success!!!")
 }
@@ -77,7 +82,8 @@ func (h *Handler) DeleteUser(ctx *gin.Context) {
 	id := pb.ById{Id: ctx.Param("id")}
 	_, err := h.User.Delete(ctx, &id)
 	if err != nil {
-		panic(err)
+		ctx.JSON(400, err.Error())
+		return
 	}
 	ctx.JSON(200, "Success!!!")
 }
@@ -89,7 +95,7 @@ func (h *Handler) DeleteUser(ctx *gin.Context) {
 // @Accept  		json
 // @Produce  		json
 // @Security  		BearerAuth
-// @Param 			query  query  models.UsersFilter true    "Query parameter"
+// @Param 			query  query  models.Filter true    "Query parameter"
 // @Success 		200 {object}  pb.GetAllUsers  "GetAll Successful"
 // @Failure 		401 {string}  string  		  "Error while GetAll"
 // @Router 			/user/getall  [get]
@@ -100,7 +106,8 @@ func (h *Handler) GetAllUser(ctx *gin.Context) {
 
 	res, err := h.User.GetAll(ctx, user)
 	if err != nil {
-		panic(err)
+		ctx.JSON(400, err.Error())
+		return
 	}
 	ctx.JSON(200, res)
 }
@@ -120,7 +127,8 @@ func (h *Handler) GetbyIdUser(ctx *gin.Context) {
 	id := pb.ById{Id: ctx.Param("id")}
 	res, err := h.User.GetById(ctx, &id)
 	if err != nil {
-		panic(err)
+		ctx.JSON(400, err.Error())
+		return
 	}
 	ctx.JSON(200, res)
 }
@@ -132,21 +140,23 @@ func (h *Handler) GetbyIdUser(ctx *gin.Context) {
 // @Accept  		json
 // @Security  		BearerAuth
 // @Produce  		json
-// @Param   		Create  body  models.Users    true     "Create"
+// @Param   		Create  body  models.Login    true     "Create"
 // @Success 		200 {object}  pb.User  "LoginUser Successful"
 // @Failure 		401 {string}  string   "Error while LoginUserd"
 // @Router 			/user/login [post]
 func (h *Handler) LoginUser(ctx *gin.Context) {
-	arr := &models.Users{}
+	arr := &models.Login{}
 	err := ctx.ShouldBindJSON(arr)
 	if err != nil {
-		panic(err)
+		ctx.JSON(400, err.Error())
+		return
 	}
-	user := &pb.User{UserName: arr.UserName, PhoneNumber: arr.PhoneNumber, Password: arr.Password, Email: arr.Email, Role: arr.Role}
+	user := &pb.User{UserName: arr.UserName}
 
 	res, err := h.User.Login(ctx, user)
 	if err != nil {
-		panic(err)
+		ctx.JSON(400, err.Error())
+		return
 	}
 	t := token.GenereteJWTToken(res)
 	ctx.JSON(200, t)

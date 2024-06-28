@@ -22,6 +22,11 @@ definitions:
       user_name:
         type: string
     type: object
+  models.Login:
+    properties:
+      userName:
+        type: string
+    type: object
   models.Users:
     properties:
       email:
@@ -134,7 +139,7 @@ paths:
         name: Create
         required: true
         schema:
-          $ref: '#/definitions/models.Users'
+          $ref: '#/definitions/models.Login'
       produces:
       - application/json
       responses:

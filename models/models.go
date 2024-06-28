@@ -8,7 +8,11 @@ type Users struct {
 	Role        string
 }
 
-type UsersFilter struct {
+type Login struct {
+	UserName string
+}
+
+type Filter struct {
 	Name  string
 	Email string
 }

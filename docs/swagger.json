@@ -165,7 +165,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Users"
+                            "$ref": "#/definitions/models.Login"
                         }
                     }
                 ],
@@ -314,6 +314,14 @@
                     "type": "string"
                 },
                 "user_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Login": {
+            "type": "object",
+            "properties": {
+                "userName": {
                     "type": "string"
                 }
             }
